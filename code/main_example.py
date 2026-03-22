@@ -1,5 +1,100 @@
-'''Module 3: count black and white pixels and compute the percentage of white pixels in a .jpg image and extrapolate points'''
+# improved code using AI
 
+import cv2
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# -----------------------------
+# INPUT DATA
+# -----------------------------
+
+filenames = [
+    r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010092.jpg",
+    r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010068.jpg",
+    r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010098.jpg",
+    r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010118.jpg",
+    r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010135.jpg",
+    r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010104.jpg",
+]
+
+depths = [15, 1000, 3000, 5300, 7000, 9900]
+
+# -----------------------------
+# VALIDATION
+# -----------------------------
+
+if len(filenames) != len(depths):
+    raise ValueError("Number of filenames must match number of depths!")
+
+# -----------------------------
+# PROCESS IMAGES
+# -----------------------------
+
+results = []
+
+for filename, depth in zip(filenames, depths):
+    img = cv2.imread(filename, 0)
+
+    if img is None:
+        print(f"⚠️ Warning: Could not load image: {filename}")
+        continue
+
+    # Convert to binary
+    _, binary = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+
+    # Count pixels
+    white = np.sum(binary == 255)
+    black = np.sum(binary == 0)
+    total = white + black
+
+    # Avoid divide-by-zero
+    white_percent = (100 * white / total) if total > 0 else 0
+
+    # Store results
+    results.append({
+        "Filename": filename,
+        "Depth": depth,
+        "White Pixels": white,
+        "Black Pixels": black,
+        "White Percent": white_percent
+    })
+
+    # Print nicely
+    print(f"\n📄 {filename}")
+    print(f"Depth: {depth} microns")
+    print(f"White pixels: {white}")
+    print(f"Black pixels: {black}")
+    print(f"White %: {white_percent:.2f}%")
+
+# -----------------------------
+# SAVE TO CSV
+# -----------------------------
+
+df = pd.DataFrame(results)
+df.to_csv("Percent_White_Pixels.csv", index=False)
+
+print("\n✅ CSV file 'Percent_White_Pixels.csv' created.")
+
+# -----------------------------
+# OPTIONAL: PLOT RESULTS
+# -----------------------------
+
+plt.figure()
+plt.scatter(df["Depth"], df["White Percent"])
+plt.xlabel("Depth (microns)")
+plt.ylabel("White Pixels (%)")
+plt.title("White Pixel Percentage vs Depth")
+plt.grid()
+plt.show()
+
+
+
+
+'''
+Given code:
+Module 3: count black and white pixels and compute the percentage of white pixels in a .jpg image and extrapolate points'''
+'''
 from termcolor import colored
 import cv2
 import numpy as np
@@ -76,7 +171,7 @@ for x in range(len(filenames)):
     print(f'{white_percents[x]}% White | Depth: {depths[x]} microns')
     print()
 
-'''Write your data to a .csv file'''
+#Write your data to a .csv file
 
 # Create a DataFrame that includes the filenames, depths, and percentage of white pixels
 df = pd.DataFrame({
@@ -91,7 +186,7 @@ df.to_csv('Percent_White_Pixels.csv', index=False)
 
 print("The .csv file 'Percent_White_Pixels.csv' has been created.")
 
-'''the .csv writing subroutine ends here'''
+#the .csv writing subroutine ends here
 
 
 ##############
@@ -141,3 +236,4 @@ print("The .csv file 'Percent_White_Pixels.csv' has been created.")
 # # Adjust layout to prevent overlap
 # plt.tight_layout()
 # plt.show()
+'''
