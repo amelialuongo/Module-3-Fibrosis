@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
+
+start = time.perf_counter()
 
 # -----------------------------
 # INPUT DATA
@@ -16,7 +19,12 @@ filenames = [
     r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010104.jpg",
 ]
 
-depths = [15, 1000, 3000, 5300, 7000, 9900]
+depths = [10000,
+    9800,
+    10000,
+    9900,
+    9500,
+    9700]
 
 # -----------------------------
 # VALIDATION
@@ -74,6 +82,11 @@ df.to_csv("Percent_White_Pixels.csv", index=False)
 
 print("\n✅ CSV file 'Percent_White_Pixels.csv' created.")
 
+end = time.perf_counter()
+print(f"\n⏱️ Total runtime: {end - start:.4f} seconds")
+
+
+'''
 # -----------------------------
 # OPTIONAL: PLOT RESULTS
 # -----------------------------
@@ -85,3 +98,4 @@ plt.ylabel("White Pixels (%)")
 plt.title("White Pixel Percentage vs Depth")
 plt.grid()
 plt.show()
+'''
