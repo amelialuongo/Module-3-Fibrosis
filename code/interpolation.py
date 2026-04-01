@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 # INPUT DATA
 # -----------------------------
 filenames = [
-    r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010136.jpg",
+    r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/MASK_SK658 Slobe ch010136.jpg",
     r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010068.jpg",
     r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010098.jpg",
     r"/Users/amelialuongo/Desktop/comp bme/Module-3-Fibrosis/images/6 images/MASK_SK658 Slobe ch010118.jpg",
@@ -60,6 +60,15 @@ df.to_csv('Percent_White_Pixels.csv', index=False)
 
 print("The .csv file 'Percent_White_Pixels.csv' has been created.")
 
+
+plt.figure()
+plt.scatter(df["Depth"], df["White percent"])
+plt.xlabel("Depth (microns)")
+plt.ylabel("White Pixels (%)")
+plt.title("White Pixel Percentage vs Depth")
+plt.grid()
+plt.show()
+
 # -----------------------------
 # INTERPOLATION
 # -----------------------------
@@ -77,7 +86,7 @@ x = list(x)
 y = list(y)
 
 # Interpolate
-i = interp1d(x, y, kind='quadratic')
+i = interp1d(x, y, kind='cubic')
 interpolate_point = float(i(interpolate_depth))
 
 print(colored(
