@@ -2,7 +2,9 @@ import cv2
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
 
+start = time.time()
 # -----------------------------
 # INPUT DATA
 # -----------------------------
@@ -85,3 +87,6 @@ plt.ylabel("White Pixels (%)")
 plt.title("White Pixel Percentage vs Depth")
 plt.grid()
 plt.show()
+
+end = time.time()
+print(f"\n⏱️ Total runtime: {end - start:.3f} seconds")
